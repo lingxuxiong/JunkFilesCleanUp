@@ -82,7 +82,6 @@ Set-Variable -Option ReadOnly -Name "JUNK_FOLDERS" -Value "C:\Scripts\tmp", "C:\
 
 Set-Variable -Option ReadOnly -Name "DAYS_BEFORE" -Value 1
 
-
 # Get all junk files older than x days
 $junkFiles = Get-ChildItem -Recurse -Path $JUNK_FOLDERS -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$DAYS_BEFORE) }
 
@@ -94,8 +93,7 @@ $totalSize = 0
 $totalCount = $junkFiles.Length
 foreach ($file in $junkFiles) {
     $totalSize += $file.Length
-    Write-Host $file
-    #Remove-Item -Force -Path $file
+    Remove-Item -Force -Path $file.FullName
 }
 
 Dump_Log_Message -Message "removed $($totalCount) files $($DAYS_BEFORE) days before, freed $($totalSize) bytes" 
